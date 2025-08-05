@@ -21,21 +21,27 @@ public class HomePageTest extends TestBase {
         Assert.assertTrue(homePage.isLogoDisplayed(), "RedBus logo not displayed");
     }
 
-    @Test(priority = 2, description = "Verify from city is selected")
+    @Test(priority = 2,description = "Verify coupons")
+    public void offerSection(){
+        homePage.offerSection();
+        homePage.applyOfferFilter("Bus");
+    }
+
+    @Test(priority = 3, description = "Verify from city is selected")
     public void verifyFromCitySelected() {
         String city = "Mumbai";
         homePage.enterFromCity(city)
                 .selectFromCity(city);
     }
 
-    @Test(priority = 3,description = "Verify to city is selected")
+    @Test(priority = 4,description = "Verify to city is selected")
     public void verifyToCitySelected() {
         String city = "Pune";
         homePage.enterToCity(city)
                 .selectToCity(city);
     }
 
-    @Test(priority = 4, dependsOnMethods = {"verifyFromCitySelected", "verifyToCitySelected"}, description = "Verify Search button is clicked")
+    @Test(priority = 5, dependsOnMethods = {"verifyFromCitySelected", "verifyToCitySelected"}, description = "Verify Search button is clicked")
     public void verifySearchSubmit() {
         busResultPage = homePage.searchButtonClick();
         Assert.assertNotNull(busResultPage, "BusResultPage should be initialized after search");

@@ -1,6 +1,7 @@
 package com.redbus.pages;
 
 import com.redbus.driver.DriverManager;
+import com.redbus.utils.CommonUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -38,6 +39,14 @@ public class HomePage {
     @FindBy(xpath = "//button[contains(@class,'searchButtonWrapper')]")
     private WebElement searchBusesButton;
 
+    @FindBy(xpath = "//div[contains(@class,'offerSection')]")
+    private WebElement offerSection;
+
+    @FindBy(xpath = "//button[contains(@class,'tonalInverseButton')]")
+    private List<WebElement> couponList;
+
+    @FindBy(xpath = "//h1[contains(@data-autoid,'headerText')]")
+    private WebElement headerText;
 
     public HomePage(WebDriver driver){
         this.driver =driver;
@@ -50,6 +59,7 @@ public class HomePage {
     }
 
     public HomePage enterFromCity(String city){
+        CommonUtils.scrollintoview(headerText);
         wait.until(ExpectedConditions.elementToBeClickable(fromCity));
         fromCity.click();
         DriverManager.getDriver().switchTo().activeElement().sendKeys(city);
@@ -90,5 +100,21 @@ public class HomePage {
         wait.until(ExpectedConditions.elementToBeClickable(searchBusesButton)).click();
         wait.until(ExpectedConditions.urlContains("/bus-tickets/"));
         return new BusResultPage(DriverManager.getDriver());
+    }
+
+    public HomePage offerSection(){
+        CommonUtils.scrollintoview(offerSection);
+        return this;
+    }
+    public HomePage applyOfferFilter(String filterName){
+        String filterXpath = String.format("//div[contains(@class,'mainContainer_')]//div[contains(text(),'%s')]",filterName);
+        WebElement filterLocator = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(filterXpath)));
+        filterLocator.click();
+        System.out.println("List of coupons");
+        for (WebElement coupon:couponList){
+            System.out.println(coupon.getText());
+        }
+        return this;
+
     }
 }
