@@ -27,7 +27,7 @@ public class TestBase {
         extent = ExtentReportUtils.initExtentReport();
         if (driver == null) {
             driver = DriverFactory.createDriver(browser);
-            DriverManager.setDriver(driver); // Keep DriverManager in sync
+            DriverManager.setDriver(driver);
             driver.get("https://www.redbus.in/");
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         }
